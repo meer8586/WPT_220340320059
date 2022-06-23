@@ -1,0 +1,98 @@
+<html>
+<body>
+
+<input type="text" id="bookid" placeholder="Enter Book Id">
+<span id="msg">Message</span><br>
+<input type="text" id="bookname" placeholder="Book Name"><br>
+<input type="text" id="bookprice" placeholder="Book Price"><br>
+<button id="update">Update Book</button>
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+
+
+$(document).ready(function()
+{
+//console.log("no more sins");
+
+
+
+
+$("#bookid").blur(()=>{
+
+	console.log("blur occured");
+
+	let input = {
+		bookid : $("#bookid").val()
+	}
+
+	let ajaxcall = {
+		data : {bookid:input},
+		url : "http://localhost:8081/getBook",
+		type : 'get',
+		datatype : "json",
+		
+		success : (output)=>{
+			console.log("Success");
+
+			$("#bookname").val(output.bookdetails.bookname);
+			$("#bookprice").val(output.bookdetails.bookprice);
+		},
+
+		error : (mistakes)=>{
+			console.log("error");
+		}	
+		
+	};
+	console.log("after ajax");
+	$.ajax(ajaxcall);
+});
+
+
+
+$("#update").click(()=>{
+	console.log("update clicked");
+	let input = {
+		bookid : $("#bookid").val(),
+		bookname : $("bookname").val(),
+		bookprice : $("#bookprice"),
+	};
+
+	let ajaxcall = {
+	data :input,
+		url : "http://localhost:8081/updateBook",
+		type : 'get',
+		datatype : 'json',
+		
+		success : (output)=>{
+			console.log("Success");
+
+			if(output){
+				$("#msg").text("updated")
+			}
+			else{
+				$("#bookname").val("");
+				$("#bookprice").val("");
+			}
+		},
+
+		error : (mistakes)=>{
+			console.log("error"+mistakes);
+		},	
+		
+	};
+	console.log("after ajax");
+	$.ajax(ajaxcall);
+});
+
+
+	
+});
+
+
+</script>
+
+
+</html>
